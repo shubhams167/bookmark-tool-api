@@ -4,18 +4,30 @@
 
 The Bookmark Tool API is a backend API for a bookmarking application build using Node.js, Express.js, and MongoDB.
 
+## How to setup Bookmark Tool API server?
+
+To use this API on a local machine, follow the following steps:
+
+1. Clone the repository using `git clone https://github.com/shubhams167/bookmark-tool-api.git`.
+2. `cd` to _bookmark-tool-api_ and run `npm install`.
+3. Create a `.env`<sup>1</sup> file and write your MongoDB connection string in the variable `DB_CONN_STRING`.
+4. Finally, run `npm run start` to start the server. For development purpose, `npm run dev-start` can be used which uses `nodemon` to run the server.
+5. Now, all the API endpoints can be accessed at `http://localhost:3000`.
+
+<sup>1</sup> My `.env` file had `DB_CONN_STRING=mongodb+srv://admin:admin@cluster0-y8tam.mongodb.net/BookmarkTool` in case you want to connect to my database instance.
+
 ## Authentication
 
 The Bookmark Tool API does not require any authentication to request resources.
 
 ## Exposed API endpoints
 
--   `/api/bookmarks`
--   `/api/bookmarks/{bookmarkID}`
--   `/api/bookmarks/{bookmarkID}/tags`
--   `/api/bookmarks/{bookmarkID}/tags/{tagID}`
--   `/api/tags`
--   `/api/tags/{tag}`
+-   [`/api/bookmarks`](#using-endpoint-apibookmarks)
+-   [`/api/bookmarks/{bookmarkID}`](#using-endpoint-apibookmarksbookmarkid)
+-   [`/api/bookmarks/{bookmarkID}/tags`](#using-endpoint-apibookmarksbookmarkidtags)
+-   [`/api/bookmarks/{bookmarkID}/tags/{tagID}`](#using-endpoint-apibookmarksbookmarkidtagstagid)
+-   [`/api/tags`](#using-endpoint-apitags)
+-   [`/api/tags/{tag}`](#using-endpoint-apitagstag)
 
 ## Using endpoint `/api/bookmarks`
 
