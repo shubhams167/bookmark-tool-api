@@ -7,11 +7,6 @@ const createTag = (data) => {
 	return tag;
 };
 
-// Function to remove a tag from DB
-const removeTag = async (id) => {
-	await Tag.deleteOne({ _id: id });
-};
-
 // Middleware to get a tag document from tag id
 const getTag = async (req, res, next) => {
 	let tag = null;
