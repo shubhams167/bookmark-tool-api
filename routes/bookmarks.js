@@ -49,7 +49,7 @@ router.get("/:bid", bookmarkHelper.getBookmark, (req, res) => {
 router.delete("/:bid", bookmarkHelper.getBookmark, async (req, res) => {
 	try {
 		await res.bookmark.deleteOne();
-		res.json({ message: "Bookmark deleted" });
+		res.json({ message: "Bookmark removed" });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -125,7 +125,7 @@ router.delete(
 			);
 			// Update bookmark in DB
 			await bookmark.save();
-			res.json({ message: "Tag deleted" });
+			res.json({ message: "Tag removed" });
 		} catch (err) {
 			res.status(500).json({ message: err.message });
 		}

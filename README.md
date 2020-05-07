@@ -1,30 +1,37 @@
 # Bookmark Tool API
 
+## Introduction
+
+The Bookmark Tool API is a backend API for a bookmarking application build using Node.js, Express.js, and MongoDB.
+
 ## Authentication
 
-> The Bookmark Tool API does not require any authentication to request resources.
+The Bookmark Tool API does not require any authentication to request resources.
 
 ## Exposed API endpoints
 
--   [`/api/bookmarks`](#endpoint-1)
--   [`/api/bookmarks/{bookmarkID}`](#endpoint-2)
--   [`/api/bookmarks/{bookmarkID}/tags`](#endpoint-3)
--   [`/api/bookmarks/{bookmarkID}/tags/{tagID}`](#endpoint-4)
+-   `/api/bookmarks`
+-   `/api/bookmarks/{bookmarkID}`
+-   `/api/bookmarks/{bookmarkID}/tags`
+-   `/api/bookmarks/{bookmarkID}/tags/{tagID}`
+-   `/api/tags`
+-   `/api/tags/{tagID}`
 
-## Endpoint `/api/bookmarks`
+## Using endpoint `/api/bookmarks`
 
-HTTP methods allowed on this endpoint are GET and POST only.
+HTTP methods allowed on this endpoint are GET, and POST only.
 
-#### HTTP GET request
+### HTTP GET request
 
-Use HTTP GET method on the endpoint `/api/bookmarks` to get a list of all the bookmarks.
+Use HTTP GET method on the endpoint `/api/bookmarks` to get all the bookmarks.
 
-**Response**: An array of bookmark objects in JSON.
+**Response**:
 
-**Example request URI**:
+Array of JSON objects each representing a bookmark having fields `_id`, `link`, `title`, `publisher`, `tags`, `createdAt`, `updatedAt`, and `__v`. The `tags` field will be an array of JSON objects having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
 
-HTTP GET `www.bookmark.io/api/bookmarks`
+**Example request**:
 
+URI: HTTP GET `www.bookmark.io/api/bookmarks`  
 Content-Type: _application/json_
 
 **Example response**:
@@ -52,21 +59,22 @@ Content-Type: _application/json_
 ]
 ```
 
-#### HTTP POST request
+### HTTP POST request
 
-Use HTTP POST method on the endpoint `/api/bookmarks` to create a new bookmark.
+Use HTTP POST method on the endpoint `/api/bookmarks` to create a new bookmark. Things to note are:
 
 1. The `title` field is optional in the request body.
-2. The `tags` field is optional in the request body.
+2. If `title` is not provided then it will be automatically fetched and filled.
+3. The `tags` field is optional in the request body.
 
-**Response**: A JSON object with a message field.
+**Response**:
 
-**Example request URI**:
+A JSON object with field `message` containing either success message or error message in case the request fails.
 
-HTTP POST `www.bookmark.io/api/bookmarks`
+**Example request**:
 
-Content-Type: _application/json_
-
+URI: HTTP POST `www.bookmark.io/api/bookmarks`  
+Content-Type: _application/json_  
 Request body:
 
 ```json
@@ -88,24 +96,272 @@ Request body:
 **Example response**:
 
 ```json
+{
+	"message": "Saved successfully"
+}
+```
+
+## Using endpoint `/api/bookmarks/{bookmarkID}`
+
+HTTP methods allowed on this endpoint are GET, PATCH, and DELETE only.
+
+### HTTP GET request
+
+Use HTTP GET method on the endpoint `/api/bookmarks/{bookmarkID}` to get a specific bookmark object having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object representing a bookmark having fields `_id`, `link`, `title`, `publisher`, `tags`, `createdAt`, `updatedAt`, and `__v`. The `tags` field will be an array of JSON objects having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+
+**Example request**:
+
+URI: HTTP GET `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+{
+	"tags": [
+		{
+			"_id": "5eb42b4cb245791c50873fbe",
+			"title": "node.js",
+			"__v": 0,
+			"createdAt": "2020-05-07T15:37:48.737Z",
+			"updatedAt": "2020-05-07T15:37:48.737Z"
+		}
+	],
+	"_id": "5eb42a008a880f4cc4c0a02c",
+	"link": "https://www.youtube.com/watch?v=dGcsHMXbSOA",
+	"title": "React Tutorial For Beginners - YouTube",
+	"publisher": "Youtube",
+	"createdAt": "2020-05-07T15:32:16.912Z",
+	"updatedAt": "2020-05-07T15:37:48.792Z",
+	"__v": 4
+}
+```
+
+### HTTP PATCH request
+
+Use HTTP PATCH method on the endpoint `/api/bookmarks/{bookmarkID}` to update `title`, or `publisher` fields of a specific bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object with field `message` containing either success message or error message in case the request fails.
+
+**Example request**:
+
+URI: HTTP PATCH `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c`  
+Content-Type: _application/json_
+Request body:
+
+```json
+{
+	"title": "Youtube"
+}
+```
+
+**Example response**:
+
+```json
+{
+	"message": "Update successful"
+}
+```
+
+### HTTP DELETE request
+
+Use HTTP DELETE method on the endpoint `/api/bookmarks/{bookmarkID}` to remove a specific bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object with field `message` containing either success message or error message in case the request fails.
+
+**Example request**:
+
+URI: HTTP DELETE `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+{
+	"message": "Bookmark removed"
+}
+```
+
+## Using endpoint `/api/bookmarks/{bookmarkID}/tags`
+
+HTTP methods allowed on this endpoint are GET, and POST only.
+
+### HTTP GET request
+
+Use HTTP GET method on the endpoint `/api/bookmarks/{bookmarkID}/tags` to get all the tags associated with the bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+Array of JSON objects each representing a tag having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+
+**Example request**:
+
+URI: HTTP GET `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c/tags`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
 [
 	{
-		"tags": [
-			{
-				"_id": "5eb42b4cb245791c50873fbe",
-				"title": "node.js",
-				"__v": 0,
-				"createdAt": "2020-05-07T15:37:48.737Z",
-				"updatedAt": "2020-05-07T15:37:48.737Z"
-			}
-		],
-		"_id": "5eb42a008a880f4cc4c0a02c",
-		"link": "https://www.youtube.com/watch?v=dGcsHMXbSOA",
-		"title": "React Tutorial For Beginners - YouTube",
-		"publisher": "Youtube",
-		"createdAt": "2020-05-07T15:32:16.912Z",
-		"updatedAt": "2020-05-07T15:37:48.792Z",
-		"__v": 4
+		"_id": "5eb42b4cb245791c50873fbe",
+		"title": "node.js",
+		"__v": 0,
+		"createdAt": "2020-05-07T15:37:48.737Z",
+		"updatedAt": "2020-05-07T15:37:48.737Z"
 	}
 ]
+```
+
+### HTTP POST request
+
+Use HTTP POST method on the endpoint `/api/bookmarks/{bookmarkID}/tags` to add a new tag to the bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object with field `message` containing either success message or error message in case the request fails.
+
+**Example request**:
+
+URI: HTTP POST `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c/tags`  
+Content-Type: _application/json_  
+Request body:
+
+```json
+{
+	"title": "politics"
+}
+```
+
+**Example response**:
+
+```json
+{
+	"message": "Tag added"
+}
+```
+
+## Using endpoint `/api/bookmarks/{bookmarkID}/tags/{tagID}`
+
+HTTP methods allowed on this endpoint are GET, and DELETE only.
+
+### HTTP GET request
+
+Use HTTP GET method on the endpoint `/api/bookmarks/{bookmarkID}/tags/{tagID}` to get a tag, having `_id` same as `tagID`, associated with the bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object representing a tag having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+
+**Example request**:
+
+URI: HTTP GET `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c/tags/5eb42b4cb245791c50873fbe`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+{
+	"_id": "5eb42b4cb245791c50873fbe",
+	"title": "node.js",
+	"__v": 0,
+	"createdAt": "2020-05-07T15:37:48.737Z",
+	"updatedAt": "2020-05-07T15:37:48.737Z"
+}
+```
+
+### HTTP DELETE request
+
+Use HTTP GET method on the endpoint `/api/bookmarks/{bookmarkID}/tags/{tagID}` to delete a tag, having `_id` same as `tagID`, associated with the bookmark having `_id` same as `bookmarkID`.
+
+**Response**:
+
+A JSON object with field `message` containing either success message or error message in case the request fails.
+
+**Example request**:
+
+URI: HTTP DELETE `www.bookmark.io/api/bookmarks/5eb42a008a880f4cc4c0a02c/tags/5eb42b4cb245791c50873fbe`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+{
+	"message": "Tag removed"
+}
+```
+
+## Using endpoint `/api/tags`
+
+HTTP method allowed on this endpoint is GET only.
+
+### HTTP GET request
+
+Use HTTP GET method on the endpoint `/api/tags` to get all tags.
+
+**Response**:
+
+Array of JSON objects each representing a tag having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+
+**Example request**:
+
+URI: HTTP GET `www.bookmark.io/api/tags`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+[
+	{
+		"_id": "5eb42b4cb245791c50873fbe",
+		"title": "node.js",
+		"__v": 0,
+		"createdAt": "2020-05-07T15:37:48.737Z",
+		"updatedAt": "2020-05-07T15:37:48.737Z"
+	},
+	{
+		"_id": "5eb44b646b162c41ac93d55d",
+		"title": "education",
+		"__v": 0,
+		"createdAt": "2020-05-07T17:54:44.587Z",
+		"updatedAt": "2020-05-07T17:54:44.587Z"
+	}
+]
+```
+
+## Using endpoint `/api/tags/{tagID}`
+
+HTTP method allowed on this endpoint is GET only.
+
+### HTTP GET request
+
+Use HTTP GET method on the endpoint `/api/tags/{tagID}` to get a tag having `_id` same as `tagID`.
+
+**Response**:
+
+A JSON object representing a tag having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+
+**Example request**:
+
+URI: HTTP GET `www.bookmark.io/api/tags/5eb42b4cb245791c50873fbe`  
+Content-Type: _application/json_
+
+**Example response**:
+
+```json
+{
+	"_id": "5eb42b4cb245791c50873fbe",
+	"title": "node.js",
+	"__v": 0,
+	"createdAt": "2020-05-07T15:37:48.737Z",
+	"updatedAt": "2020-05-07T15:37:48.737Z"
+}
 ```
