@@ -45,16 +45,6 @@ router.get("/:bid", bookmarkHelper.getBookmark, (req, res) => {
 	res.send(res.bookmark);
 });
 
-// Route to delete a specific bookmark along with its tags
-router.delete("/:bid", bookmarkHelper.getBookmark, async (req, res) => {
-	try {
-		await res.bookmark.deleteOne();
-		res.json({ message: "Bookmark removed" });
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-});
-
 // Route to update a specific bookmark
 router.patch("/:bid", bookmarkHelper.getBookmark, async (req, res) => {
 	// Check if user requested to update the title
@@ -69,6 +59,16 @@ router.patch("/:bid", bookmarkHelper.getBookmark, async (req, res) => {
 	try {
 		await res.bookmark.save();
 		res.json({ message: "Update successful" });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+});
+
+// Route to delete a specific bookmark along with its tags
+router.delete("/:bid", bookmarkHelper.getBookmark, async (req, res) => {
+	try {
+		await res.bookmark.deleteOne();
+		res.json({ message: "Bookmark removed" });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

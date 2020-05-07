@@ -15,7 +15,7 @@ The Bookmark Tool API does not require any authentication to request resources.
 -   `/api/bookmarks/{bookmarkID}/tags`
 -   `/api/bookmarks/{bookmarkID}/tags/{tagID}`
 -   `/api/tags`
--   `/api/tags/{tagID}`
+-   `/api/tags/{tag}`
 
 ## Using endpoint `/api/bookmarks`
 
@@ -337,31 +337,51 @@ Content-Type: _application/json_
 ]
 ```
 
-## Using endpoint `/api/tags/{tagID}`
+## Using endpoint `/api/tags/{tag}`
 
 HTTP method allowed on this endpoint is GET only.
 
 ### HTTP GET request
 
-Use HTTP GET method on the endpoint `/api/tags/{tagID}` to get a tag having `_id` same as `tagID`.
+Use HTTP GET method on the endpoint `/api/tags/{tag}` to get all bookmarks tagged with `tag`. The `tag` is case-insensitive.
 
 **Response**:
 
-A JSON object representing a tag having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
+Array of JSON objects each representing a bookmark having fields `_id`, `link`, `title`, `publisher`, `tags`, `createdAt`, `updatedAt`, and `__v`. The `tags` field will be an array of JSON objects having fields `_id`, `title`, `createdAt`, `updatedAt`, and `__v`. If the request fails, response will be a JSON object with field `message` containing error message.
 
 **Example request**:
 
-URI: HTTP GET `www.bookmark.io/api/tags/5eb42b4cb245791c50873fbe`  
+URI: HTTP GET `www.bookmark.io/api/tags/trump`  
 Content-Type: _application/json_
 
 **Example response**:
 
 ```json
-{
-	"_id": "5eb42b4cb245791c50873fbe",
-	"title": "node.js",
-	"__v": 0,
-	"createdAt": "2020-05-07T15:37:48.737Z",
-	"updatedAt": "2020-05-07T15:37:48.737Z"
-}
+[
+	{
+		"tags": [
+			{
+				"_id": "5eb4673e546a0527085bb9f7",
+				"title": "politics",
+				"__v": 0,
+				"createdAt": "2020-05-07T19:53:34.885Z",
+				"updatedAt": "2020-05-07T19:53:34.885Z"
+			},
+			{
+				"_id": "5eb467dd546a0527085bb9fd",
+				"title": "Trump",
+				"__v": 0,
+				"createdAt": "2020-05-07T19:56:13.947Z",
+				"updatedAt": "2020-05-07T19:56:13.947Z"
+			}
+		],
+		"_id": "5eb4673e546a0527085bb9f6",
+		"link": "https://www.nytimes.com/2020/04/14/us/politics/trump-total-authority-claim.html",
+		"title": "Trump's Total Authority Claim Is Rejected Across Ideological Lines - The New York Times",
+		"publisher": "NY Times",
+		"createdAt": "2020-05-07T19:53:34.835Z",
+		"updatedAt": "2020-05-07T20:02:26.148Z",
+		"__v": 4
+	}
+]
 ```
