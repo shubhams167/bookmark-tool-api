@@ -15,11 +15,6 @@ router.get("/", async (req, res) => {
 	}
 });
 
-// Route to get a specific bookmark by providing bookmark id
-router.get("/:bid", bookmarkHelper.getBookmark, (req, res) => {
-	res.send(res.bookmark);
-});
-
 // Route to create a bookmark
 router.post("/", async (req, res) => {
 	try {
@@ -43,6 +38,11 @@ router.post("/", async (req, res) => {
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
+});
+
+// Route to get a specific bookmark by providing bookmark id
+router.get("/:bid", bookmarkHelper.getBookmark, (req, res) => {
+	res.send(res.bookmark);
 });
 
 // Route to delete a specific bookmark along with its tags
