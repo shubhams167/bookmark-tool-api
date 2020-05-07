@@ -6,7 +6,7 @@ The Bookmark Tool API is a backend API for a bookmarking application build using
 
 ## How to setup Bookmark Tool API server?
 
-To use this API on a local machine, follow the following steps:
+To setup this API server on a local machine, follow the following steps:
 
 1. Clone the repository using `git clone https://github.com/shubhams167/bookmark-tool-api.git`.
 2. `cd` to _bookmark-tool-api_ and run `npm install`.
