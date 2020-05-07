@@ -3,12 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv/config");
 
-const bookmarkRoute = require("./routes/bookmark");
-const tagRoute = require("./routes/tag");
+const bookmarkRoute = require("./routes/bookmarks");
+const tagRoute = require("./routes/tags");
 
 app.use(express.json());
-app.use("/bookmark", bookmarkRoute);
-app.use("/tag", tagRoute);
+app.use("/api/bookmarks", bookmarkRoute);
+app.use("/api/tags", tagRoute);
 
 app.get("/", (req, res) => {
 	res.send("Hello World!");

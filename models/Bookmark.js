@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Tag = require("./Tag");
 // Schema for a bookmark
 const bookmarkSchema = mongoose.Schema(
 	{
@@ -10,5 +10,15 @@ const bookmarkSchema = mongoose.Schema(
 	},
 	{ timestamps: true }
 );
+
+// Middleware to delete all referenced tags after deleting a bookmark
+bookmarkSchema.post("deleteOne", { document: true }, async (doc, next) => {
+	try {
+		await Tag.deleteMany({ _id: { $in: doc.tags } });
+		next();
+	} catch (err) {
+		next(err);
+	}
+});
 
 module.exports = mongoose.model("Bookmark", bookmarkSchema);
