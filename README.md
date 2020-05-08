@@ -77,7 +77,7 @@ Use HTTP POST method on the endpoint `/api/bookmarks` to create a new bookmark. 
 
 1. The `title` field is optional in the request body.
 2. If `title` is not provided then it will be automatically fetched and filled.
-3. The `tags` field is optional in the request body.
+3. The `tags` field can be an empty array in the request body.
 
 **Response**:
 
@@ -92,7 +92,6 @@ Request body:
 ```json
 {
 	"link": "https://www.youtube.com",
-	"title": "Youtube",
 	"publisher": "Youtube India",
 	"tags": [
 		{
